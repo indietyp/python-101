@@ -5,6 +5,7 @@ IMPRS for Cell, Developmental and Systems Biology at the MPI-CBG.
 
 To access the exercise portion of the course, please visit one of the following links:
 * [GitHub]
+* [MPI-CBG GitLab]
 * [MPI-CBG OwnCloud]
 * [TU-Dresden OwnCloud]
 
