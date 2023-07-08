@@ -11,8 +11,8 @@ this course is to give you a solid foundation in Python, so that you can continu
 * [Functions And Classes](../05-functions-and-classes)
 
 This course is going to be a bit more experimental than other courses offered by the IMPRS. Instead of being a full
-intensity course (half-) day course, we're going to meet for 90 minutes twice a week. This will give you more time to
-work on the exercises and to ask questions.
+intensity course (half-) day course, we're going to meet for 90 minutes twice a week for two weeks. This will give you
+more time to work on the exercises and to ask questions.
 
 Instead of simply being a lecture, this course is going to be exercise driven. This means that every session will start
 with the solution of the previous session's exercises. After that, we will introduce new concepts and give you new
@@ -27,3 +27,7 @@ the [Bash Cheat Sheet](../06-appendix/00-bash-cheat-sheet.md)
 and [Git Cheat Sheet](../06-appendix/01-git-cheat-sheet.md). The Git cheat sheet is only applicable if you are using the
 Git repository for the exercises (recommended for people with Git experienced, or who have attended the Git 101 or Git
 102 course).
+
+After every session, you are able to give feedback on the course, this feedback can be anonymous or not, it is up to
+you. The feedback form can be found [here]. (It is not mandatory to give feedback, but it is appreciated, it allows us
+to improve the course.)
