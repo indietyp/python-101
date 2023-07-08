@@ -198,6 +198,12 @@ open <path>
 
 This will open the file with the default application for that file type.
 
+```admonish tip
+
+On macOS you can also use `open .` to open the current directory in Finder.
+
+```
+
 ### Printing Files
 
 You can print files by using the `cat` command. (cat stands for **cat**enate)
