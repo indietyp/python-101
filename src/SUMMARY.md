@@ -1,4 +1,4 @@
 # Summary
 
-- [Introduction](./00-introduction.md)
-- [Setup](./01-setup.md)
+- [Introduction](./00-introduction)
+- [Setup](./01-setup)
