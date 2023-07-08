@@ -1,0 +1,25 @@
+[book]
+authors = ["Bilal Mahmoud"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Python 101: Introduction"
+
+[preprocessor]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "2.0.1" # do not edit: managed by `mdbook-admonish install`
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+
+[preprocessor.emojicodes]
+
+[output]
+
+[output.html]
+additional-css = ["./css/mdbook-admonish.css"]
+additional-js = ["./js/mermaid.min.js", "./js/mermaid-init.js"]
+
+[output.linkcheck]
