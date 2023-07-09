@@ -1,5 +1,7 @@
 value = input('Enter a word: ')
-reverse = reversed(value)
 
-if list(value) == list(reverse):
+reverse = reversed(value)
+reverse = ''.join(reverse)
+
+if value == reverse:
     print(f'{value} is a palindrome')
