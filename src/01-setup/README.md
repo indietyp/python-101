@@ -115,6 +115,23 @@ If you are unable to run the `pyenv` command, you will need to configure your sh
 > or later, you will need to configure zsh instead of bash. To check which shell you are using, run the following
 > command: `ps -o comm= $$`
 
+```admonish info title="What is a shell?" collapsible=true
+
+A shell is a program that acts as an interface between the user and the operating system.
+It allows users to interact with the computer by typing commands and receiving their result.
+Think of it as the "translator" between you and the computer.
+
+When you open a terminal on your computer, you're essentially opening a shell. It provides a text-based environment
+where you can run various commands to perform tasks like navigating through files and directories, running programs, managing files and more.
+
+The shell takes the commands you type and sends them to the operating system for execution.
+It then displays the results or any error messages back to you. This way, you can control the computer and perform tasks without relying solely on graphical interfaces.
+
+Different operating systems have different types of shells.
+For example, Unix-like systems like Linux and macOS typically use the Bash (**B**ourne **A**gain **Sh**ell) or Zsh (**Z** **Sh**ell).
+
+```
+
 Once you have added the lines to your shell configuration file, you will need to restart your terminal.
 
 Depending on the shell you are using, you will need to add the following lines to your shell configuration file:
