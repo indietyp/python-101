@@ -31,3 +31,18 @@ Git repository for the exercises (recommended for people with Git experienced, o
 After every session, you are able to give feedback on the course, this feedback can be anonymous or not, it is up to
 you. The feedback form can be found [here]. (It is not mandatory to give feedback, but it is appreciated, it allows us
 to improve the course.)
+
+
+## Code Snippets
+
+In this book we will have a lot of code snippets, these snippets will be formatted like this:
+
+```python
+print("Hello World!")
+```
+
+The expected output from a print statement will be formatted like this:
+
+```python
+# > Hello World!
+```

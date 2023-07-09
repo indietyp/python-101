@@ -5,7 +5,7 @@ This file uses pytest and hypothesis to verify that your solution to each task i
 
 You can run this file with the following command:
 
-    pytest tasks/02-starting-out/verify.py
+    pytest tasks/02-starting-out/test.py
 
 
 To install all the required packages, run the following command:

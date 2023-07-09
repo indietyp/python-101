@@ -4,8 +4,7 @@ This is the repository for the Python 101 introduction course, which is offered 
 IMPRS for Cell, Developmental and Systems Biology at the MPI-CBG.
 
 To access the exercise portion of the course, please visit one of the following links:
-* [GitHub]
-* [MPI-CBG GitLab]
+* [GitHub](https://github.com/indietyp/python-101/tree/main/tasks)
 * [MPI-CBG OwnCloud]
 * [TU-Dresden OwnCloud]
 

@@ -4,6 +4,13 @@
 - [Setup](./01-setup/README.md)
   - [Windows](./01-setup/00-windows.md)] 
 - [Starting Out](./02-starting-out/README.md)
+  - [Program Structure](./02-starting-out/00-program-structure.md)
+  - [Comments](./02-starting-out/01-comments.md)
+  - [Variables](./02-starting-out/02-variables.md)
+  - [Expressions](./02-starting-out/03-expressions.md)
+  - [Operators](./02-starting-out/04-operators.md)
+  - [Primitive Types](./02-starting-out/05-primitive-types.md)
+  - [Functions and Methods](./02-starting-out/06-methods-and-functions.md)
 - [Control Flow](./03-control-flow/README.md)
 - [Data Structures](./04-data-structures/README.md)
 - [Functions And Classes](./05-functions-and-classes/README.md)
