@@ -1,0 +1,39 @@
+name: Python Exercises
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+  pull_request:
+
+concurrency:
+  group: "python-exercises"
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Choose Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest hypothesis
+
+      - name: Test
+        env:
+          SOLUTION: 1
+        run: pytest tasks/*/test.py
+
