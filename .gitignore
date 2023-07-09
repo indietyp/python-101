@@ -1,1 +1,4 @@
 book
+
+.pytest_cache
+.hypothesis

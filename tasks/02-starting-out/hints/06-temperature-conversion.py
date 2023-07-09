@@ -13,8 +13,8 @@ Example:
 """
 
 celsius = input("Enter the temperature in Celsius: ")
-celsius = float(celsius)
+celsius = _____(celsius)
 
-fahrenheit = celsius * 9 / 5 + 32
+fahrenheit = _______ * _ / _ + __
 
 print(fahrenheit)
