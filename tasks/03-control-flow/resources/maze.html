@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maze</title>
+    <style>
+        body {
+            font-family: monospace;
+            font-size: 1.5em;
+
+            --cols: 1;
+            --rows: 1;
+        }
+
+        .maze {
+            display: grid;
+            grid-template-columns: repeat(var(--cols), 32px);
+        }
+
+        .maze.hidden {
+            display: none;
+        }
+
+        .maze .cell {
+            width: 32px;
+            height: 32px;
+        }
+
+        .maze .cell.wall {
+            background-color: #000;
+        }
+
+        .maze .cell.empty {
+            background-color: #fff;
+        }
+
+        .maze .cell.start {
+            background-color: #0f0;
+        }
+
+        .maze .cell.exit {
+            background-color: #f00;
+        }
+
+        .maze .cell.visited {
+            background-color: #00f;
+        }
+
+        .maze .cell.marked {
+            background-color: #ff0;
+        }
+    </style>
+    <script>
+        const MazeTransitionContainerClass = 'maze-container'
+        const delay = 200;
+
+        /**
+         * @param {HTMLElement} container
+         */
+        function runAnimation(container) {
+            let max = container.children.length;
+            let i = 0;
+
+            setInterval(() => {
+                if (i >= max) {
+                    i = 0;
+                }
+
+                // set every maze to display none
+                for (let j = 0; j < max; j++) {
+                    container.children[j].classList.add('hidden');
+                }
+
+                // set current maze to be displayed
+                container.children[i].classList.remove('hidden');
+
+                i++;
+
+            }, delay);
+        }
+
+        document.addEventListener('load', () => {
+            let container = document.getElementById(MazeTransitionContainerClass);
+
+            if (!container) {
+                // that's fine, we are in single mode
+                return;
+            }
+
+            runAnimation(container);
+        });
+    </script>
+</head>
+<body>
+{{ $maze }}
+</body>
+</html>

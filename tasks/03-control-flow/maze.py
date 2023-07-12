@@ -2,22 +2,24 @@ import abc
 from copy import deepcopy
 from dataclasses import dataclass
 from enum import IntFlag, auto
+from pathlib import Path
 from random import choice, randrange, shuffle
 from typing import Self
+import xml.etree.ElementTree as ET
+
+DIRECTORY = Path(__file__).parent.absolute()
 
 
 class State(IntFlag):
     WALL = auto()
     EMPTY = auto()
-    START = auto()
-    EXIT = auto()
 
     # These are not strictly necessary, but helpful for implementing different algorithms.
     VISITED = auto()
     MARKED = auto()
 
 
-DENY = State.WALL | State.START | State.EXIT | State.EMPTY
+DENY = State.WALL | State.EMPTY
 
 
 class Time:
@@ -52,7 +54,7 @@ class Cell:
     depth: int
     modified: Time
 
-    maze: 'Maze'
+    _maze: 'Maze'
 
     def __init__(self, position: Position, maze: 'Maze'):
         self.position = position
@@ -60,7 +62,7 @@ class Cell:
         self.depth = 0
         self._state = State.EMPTY
 
-        self.maze = maze
+        self._maze = maze
 
     # noinspection PyProtectedMember
     def neighbours(self, state: State | None = None) -> list['Cell']:
@@ -69,13 +71,13 @@ class Cell:
         x, y = self.position.components()
 
         if x > 0:
-            neighbours.append(self.maze._cells[y][x - 1])
-        if x < len(self.maze._cells[0]) - 1:
-            neighbours.append(self.maze._cells[y][x + 1])
+            neighbours.append(self._maze._cells[y][x - 1])
+        if x < len(self._maze._cells[0]) - 1:
+            neighbours.append(self._maze._cells[y][x + 1])
         if y > 0:
-            neighbours.append(self.maze._cells[y - 1][x])
-        if y < len(self.maze._cells) - 1:
-            neighbours.append(self.maze._cells[y + 1][x])
+            neighbours.append(self._maze._cells[y - 1][x])
+        if y < len(self._maze._cells) - 1:
+            neighbours.append(self._maze._cells[y + 1][x])
 
         if state is not None:
             neighbours = [cell for cell in neighbours if cell._state in state]
@@ -89,23 +91,17 @@ class Cell:
         return self._state
 
     def set_state(self, state: State):
-        if self._state == State.START:
-            raise Exception('Cannot change the state of the start cell.')
-
-        if self._state == State.EXIT:
-            raise Exception('Cannot change the state of the exit cell.')
-
         if self._state == State.WALL and state != State.WALL:
             raise Exception('Cannot change the state of a wall cell.')
 
-        self.maze.snapshots.append(deepcopy(self))
+        self._maze.snapshots.append(deepcopy(self))
 
         self._state = state
         # noinspection PyProtectedMember
-        self.modified = self.maze._tick()
+        self.modified = self._maze._tick()
 
     def _copy(self) -> Self:
-        copy = Cell(self.position, self.maze)
+        copy = Cell(self.position, self._maze)
         copy._state = self._state
         copy.depth = self.depth
 
@@ -117,11 +113,13 @@ class Cell:
     def is_empty(self) -> bool:
         return self._state == State.EMPTY
 
+    # noinspection PyProtectedMember
     def is_start(self) -> bool:
-        return self._state == State.START
+        return self._maze._start == self.position
 
+    # noinspection PyProtectedMember
     def is_exit(self) -> bool:
-        return self._state == State.EXIT
+        return self._maze._exit == self.position
 
     def is_visited(self) -> bool:
         return self._state == State.VISITED
@@ -166,19 +164,21 @@ class Maze:
         # not using setter to not increase time
         for y, row in enumerate(grid):
             for x, cell in enumerate(row):
-                if (x, y) == start:
-                    self._cells[y][x]._state = State.START
-
-                elif (x, y) == end:
-                    self._cells[y][x]._state = State.EXIT
-
                 if cell == 1:
                     self._cells[y][x]._state = State.WALL
 
         self._start = Position(*start)
         self._exit = Position(*end)
 
-        self._original = [[cell._copy() for cell in row] for row in self._cells]
+        self._original = self._copy_grid()
+
+    # noinspection PyProtectedMember
+    def _copy_grid(self) -> list[list[Cell]]:
+        return [[cell._copy() for cell in row] for row in self._cells]
+
+    # noinspection PyProtectedMember
+    def _copy_original(self) -> list[list[Cell]]:
+        return [[cell._copy() for cell in row] for row in self._original]
 
     def __init__(self, width: int, height: int):
         self.time = Time()
@@ -271,8 +271,50 @@ class Maze:
         if not self.has_path():
             raise Exception('No path from start to exit.')
 
-    def export(self):
-        ...
+    @staticmethod
+    def _render_tree(cells: list[list[Cell]]) -> ET.Element:
+        tree = ET.Element('div', attrib={'class': 'maze'})
+
+        for row in cells:
+            for cell in row:
+                class_names = ['cell']
+
+                if cell.is_start():
+                    class_names.append('start')
+                elif cell.is_exit():
+                    class_names.append('exit')
+
+                class_names.append(cell.state().name.lower())
+
+                ET.SubElement(tree, 'div',
+                              attrib={'class': ' '.join(class_names)})
+
+        return tree
+
+    def render(self) -> str:
+        with open(DIRECTORY / 'resources/maze.html') as file:
+            template = file.read()
+
+        tree = self._render_tree(self._cells)
+
+        return template.replace('{{ $maze }}',
+                                ET.tostring(tree, method='html', encoding='unicode'))
+
+    def export(self) -> str:
+        original = self._copy_original()
+
+        container = ET.Element('div', attrib={'class': 'maze-container'})
+        container.append(self._render_tree(original))
+
+        for snapshot in self.snapshots:
+            snapshot = snapshot._copy()
+            x = snapshot.position.x
+            y = snapshot.position.y
+
+            original[y][x] = snapshot
+            container.append(self._render_tree(original))
+
+        return ET.tostring(container, method='html', encoding='unicode')
 
 
 # Taken from https://github.com/john-science/mazelib/tree/main
