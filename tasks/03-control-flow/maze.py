@@ -1,17 +1,20 @@
-from enum import Enum
-from random import randint, choice
+from enum import IntFlag, auto
+from random import choice
 from typing import Self
 
 
-class State(Enum):
-    WALL = 0
-    EMPTY = 1
-    START = 2
-    EXIT = 3
+class State(IntFlag):
+    WALL = auto()
+    EMPTY = auto()
+    START = auto()
+    EXIT = auto()
 
     # These are not strictly necessary, but helpful for implementing different algorithms.
-    VISITED = 4
-    MARKED = 5
+    VISITED = auto()
+    MARKED = auto()
+
+
+DENY = State.WALL | State.START | State.EXIT | State.EMPTY
 
 
 class Time:
@@ -81,7 +84,7 @@ class Cell:
             neighbours.append(self.maze.cells[self.y + 1][self.x])
 
         if state is not None:
-            neighbours = [cell for cell in neighbours if cell.state == state]
+            neighbours = [cell for cell in neighbours if cell.state in state]
 
         return neighbours
 
@@ -143,6 +146,8 @@ class Maze:
     _start: Position
     _exit: Position
 
+    _hardcore: bool
+
     def _tick(self) -> Time:
         self.time.tick()
         return self.time
@@ -154,8 +159,16 @@ class Maze:
         return self.cells[position.y][position.x]
 
     def cells(self, state: State | None = None) -> list[Cell]:
+
+        # we no longer allow the user to get all nodes, only a subset
+        if self._hardcore:
+            if state is None:
+                state = ~DENY
+            else:
+                state = state & ~DENY
+
         return [cell for row in self.cells for cell in row if
-                state is None or cell.state == state]
+                state is None or cell.state in state]
 
     def random_cell(self, state: State | None = None) -> Cell:
         return choice(self.cells(state))
@@ -179,7 +192,29 @@ class Maze:
     def start(self) -> Cell:
         return self.cell(self._start)
 
-    @staticmethod
-    def assert_exit(cell: Cell):
-        if not cell.is_exit():
-            raise Exception(f'Cell {cell} is not an exit cell.')
+    def has_path(self):
+        """
+        Assert that we have a path from the start to the exit with `State.MARKED` cells.
+        """
+
+        start = self.start()
+
+        stack = [start]
+        while stack:
+            cell = stack.pop()
+
+            for neighbour in self.neighbours(cell, State.MARKED):
+                if neighbour.is_exit():
+                    return True
+
+                stack.append(neighbour)
+
+        return False
+
+    def assert_path(self):
+        """
+        Assert that we have a path from the start to the exit with `State.MARKED` cells.
+        """
+
+        if not self.has_path():
+            raise Exception('No path from start to exit.')

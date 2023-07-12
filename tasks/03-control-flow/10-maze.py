@@ -48,10 +48,12 @@ The maze object exposes the following methods:
     - `oldest_cell(state: State | None) -> Cell`:
         Returns the oldest position of the specified state,
         time is measured by the modification time.
-    - `neighbors(position: Cell, state: State | None) -> list[Cell]`: Returns a list of positions that
-        are neighbors of the given position.
+    - `neighbors(position: Cell, state: State | None) -> list[Cell]`:
+        Returns a list of positions that are neighbors of the given position.
     - `start() -> Cell`: Returns the starting position.
-    - `assert_exit(cell: Cell) -> None`: Raises an exception if the given position
+    - `has_path() -> bool`:
+        Returns `True` if there is a path from the starting position using `State.MARKED`
+    - `assert_path(cell: Cell) -> None`: Raises an exception if the given position
         is not the exit of the maze.
     - `export(filename: str) -> None`: Exports the maze to the given filename as a GIF
         image.
