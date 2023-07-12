@@ -7,8 +7,15 @@ from random import choice, randrange, shuffle
 from typing import Self
 import xml.etree.ElementTree as ET
 
-DIRECTORY = Path(__file__).parent.absolute()
+TASK_ROOT = Path(__file__).parent
 
+while TASK_ROOT.name != "tasks":
+    TASK_ROOT = TASK_ROOT.parent
+
+    if TASK_ROOT == Path("/"):
+        raise Exception("Could not find tasks directory.")
+
+RESOURCES = TASK_ROOT / "03-control-flow" / "resources"
 
 class State(IntFlag):
     WALL = auto()
@@ -100,7 +107,7 @@ class Cell:
         # noinspection PyProtectedMember
         self.modified = self._maze._tick()
 
-    def _copy(self) -> Self:
+    def copy(self) -> Self:
         copy = Cell(self.position, self._maze)
         copy._state = self._state
         copy.depth = self.depth
@@ -153,13 +160,13 @@ class Maze:
     _hardcore: bool
 
     # noinspection PyProtectedMember
-    def generate(self, width: int, height: int):
+    def _generate(self, width: int, height: int):
         generator = Prims(height, width)
         grid = generator.generate()
         start, end = generator.entrances(grid)
 
-        self._cells = [[Cell(Position(x, y), self) for x in range(width)] for y in
-                       range(height)]
+        self._cells = [[Cell(Position(x, y), self) for x in range(generator.W)] for y in
+                       range(generator.H)]
 
         # not using setter to not increase time
         for y, row in enumerate(grid):
@@ -172,18 +179,16 @@ class Maze:
 
         self._original = self._copy_grid()
 
-    # noinspection PyProtectedMember
     def _copy_grid(self) -> list[list[Cell]]:
-        return [[cell._copy() for cell in row] for row in self._cells]
+        return [[cell.copy() for cell in row] for row in self._cells]
 
-    # noinspection PyProtectedMember
     def _copy_original(self) -> list[list[Cell]]:
-        return [[cell._copy() for cell in row] for row in self._original]
+        return [[cell.copy() for cell in row] for row in self._original]
 
     def __init__(self, width: int, height: int):
         self.time = Time()
 
-        self.generate(width, height)
+        self._generate(width, height)
 
         self.snapshots = []
 
@@ -199,7 +204,11 @@ class Maze:
     def _apply_snapshot(self, snapshot: Cell):
         self._cells[snapshot.position.y][snapshot.position.x] = snapshot
 
-    def size(self) -> (int, int):
+    def size(self) -> tuple[int, int]:
+        """
+        Returns the size of the maze in the form (width, height)
+        """
+
         return len(self._cells[0]), len(self._cells)
 
     def cell(self, position: Position) -> Cell:
@@ -271,9 +280,10 @@ class Maze:
         if not self.has_path():
             raise Exception('No path from start to exit.')
 
-    @staticmethod
-    def _render_tree(cells: list[list[Cell]]) -> ET.Element:
-        tree = ET.Element('div', attrib={'class': 'maze'})
+    def _render_tree(self, cells: list[list[Cell]]) -> ET.Element:
+        columns, rows = self.size()
+        tree = ET.Element('div', attrib={'class': 'maze',
+                                         'style': f'--cols: {columns}; --rows: {rows};'})
 
         for row in cells:
             for cell in row:
@@ -291,30 +301,33 @@ class Maze:
 
         return tree
 
-    def render(self) -> str:
-        with open(DIRECTORY / 'resources/maze.html') as file:
+    @staticmethod
+    def _render_template(body: str) -> str:
+        with open(RESOURCES / 'maze.html') as file:
             template = file.read()
 
+        return template.replace('{{ $maze }}', body)
+
+    def render_state(self) -> str:
         tree = self._render_tree(self._cells)
+        return self._render_template(ET.tostring(tree, method='html', encoding='unicode'))
 
-        return template.replace('{{ $maze }}',
-                                ET.tostring(tree, method='html', encoding='unicode'))
-
-    def export(self) -> str:
+    def render_animation(self) -> str:
         original = self._copy_original()
 
         container = ET.Element('div', attrib={'class': 'maze-container'})
         container.append(self._render_tree(original))
 
         for snapshot in self.snapshots:
-            snapshot = snapshot._copy()
+            snapshot = snapshot.copy()
             x = snapshot.position.x
             y = snapshot.position.y
 
             original[y][x] = snapshot
             container.append(self._render_tree(original))
 
-        return ET.tostring(container, method='html', encoding='unicode')
+        return self._render_template(
+            ET.tostring(container, method='html', encoding='unicode'))
 
 
 # Taken from https://github.com/john-science/mazelib/tree/main
