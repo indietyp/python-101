@@ -208,14 +208,20 @@ class Maze:
         start = self.start()
 
         stack = [start]
+        visited = {start.position}
+
         while stack:
             cell = stack.pop()
 
             for neighbour in self.neighbours(cell, State.MARKED):
+                if neighbour.position in visited:
+                    continue
+
                 if neighbour.is_exit():
                     return True
 
                 stack.append(neighbour)
+                visited.add(neighbour.position)
 
         return False
 
