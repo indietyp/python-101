@@ -4,11 +4,11 @@ Over the next two weeks, we will be learning the basics of Python, like any othe
 complexities. We won't be able to cover all imaginable topics in this course, but we will cover the basics. The goal of
 this course is to give you a solid foundation in Python, so that you can continue to learn on your own.
 
-* [Setup](../01-setup/README.md)
-* [Starting Out](../02-starting-out/README.md)
-* [Control Flow](../03-control-flow/README.md)
-* [Data Structures](../04-data-structures/README.md)
-* [Functions And Classes](../05-functions-and-classes/README.md)
+* [Setup](../01-setup)
+* [Starting Out](../02-starting-out)
+* [Control Flow](../03-control-flow)
+* [Data Structures](../04-data-structures)
+* [Functions And Classes](../05-functions-and-classes)
 
 This course is going to be a bit more experimental than other courses offered by the IMPRS. Instead of being a full
 intensity course (half-) day course, we're going to meet for 90 minutes twice a week for two weeks. This will give you
