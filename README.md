@@ -1,9 +1,10 @@
-# Git 102 - Advanced Git
+# Python 101 - Introduction
 
 This is the repository for the Python 101 introduction course, which is offered as part of the course offering of the
 IMPRS for Cell, Developmental and Systems Biology at the MPI-CBG.
 
 To access the exercise portion of the course, please visit one of the following links:
+
 * [GitHub](https://github.com/indietyp/python-101/tree/main/tasks)
 * [MPI-CBG OwnCloud]
 * [TU-Dresden OwnCloud]
