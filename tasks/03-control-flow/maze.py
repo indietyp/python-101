@@ -147,6 +147,7 @@ class Maze:
     _cells: list[list[Cell]]
 
     snapshots: list[Cell]
+    _original: list[list[Cell]]
 
     _start: Position
     _exit: Position
@@ -176,6 +177,8 @@ class Maze:
 
         self._start = Position(*start)
         self._exit = Position(*end)
+
+        self._original = [[cell._copy() for cell in row] for row in self._cells]
 
     def __init__(self, width: int, height: int):
         self.time = Time()
