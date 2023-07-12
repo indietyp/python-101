@@ -1,3 +1,5 @@
+from copy import deepcopy
+from dataclasses import dataclass
 from enum import IntFlag, auto
 from random import choice
 from typing import Self
@@ -27,13 +29,10 @@ class Time:
         self.t += 1
 
 
+@dataclass(frozen=True, slots=True, match_args=True, order=True, init=True, repr=True)
 class Position:
     x: int
     y: int
-
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
 
     def manhattan_distance(self, other: Self) -> int:
         return abs(self.x - other.x) + abs(self.y - other.y)
@@ -41,17 +40,8 @@ class Position:
     def euclidean_distance(self, other: Self) -> float:
         return ((self.x - other.x)**2 + (self.y - other.y)**2)**0.5
 
-    def __str__(self) -> str:
-        return f'({self.x}, {self.y})'
-
-    def __repr__(self) -> str:
-        return str(self)
-
-    def __eq__(self, other: Self) -> bool:
-        return self.x == other.x and self.y == other.y
-
-    def __hash__(self) -> int:
-        return hash((self.x, self.y))
+    def components(self) -> tuple[int, int]:
+        return self.x, self.y
 
 
 class Cell:
@@ -63,9 +53,8 @@ class Cell:
 
     maze: 'Maze'
 
-    def __init__(self, x: int, y: int, maze: 'Maze'):
-        self.x = x
-        self.y = y
+    def __init__(self, position: Position, maze: 'Maze'):
+        self.position = position
 
         self.depth = 0
 
@@ -74,14 +63,16 @@ class Cell:
     def neighbours(self, state: State | None = None) -> list['Cell']:
         neighbours = []
 
-        if self.x > 0:
-            neighbours.append(self.maze.cells[self.y][self.x - 1])
-        if self.x < len(self.maze.cells[0]) - 1:
-            neighbours.append(self.maze.cells[self.y][self.x + 1])
-        if self.y > 0:
-            neighbours.append(self.maze.cells[self.y - 1][self.x])
-        if self.y < len(self.maze.cells) - 1:
-            neighbours.append(self.maze.cells[self.y + 1][self.x])
+        x, y = self.position.components()
+
+        if x > 0:
+            neighbours.append(self.maze.cells[y][x - 1])
+        if x < len(self.maze.cells[0]) - 1:
+            neighbours.append(self.maze.cells[y][x + 1])
+        if y > 0:
+            neighbours.append(self.maze.cells[y - 1][x])
+        if y < len(self.maze.cells) - 1:
+            neighbours.append(self.maze.cells[y + 1][x])
 
         if state is not None:
             neighbours = [cell for cell in neighbours if cell.state in state]
@@ -104,9 +95,18 @@ class Cell:
         if self.state == State.WALL and state != State.WALL:
             raise Exception('Cannot change the state of a wall cell.')
 
+        self.maze.snapshots.append(deepcopy(self))
+
         self.state = state
         # noinspection PyProtectedMember
         self.modified = self.maze._tick()
+
+    def _copy(self) -> Self:
+        copy = Cell(self.position, self.maze)
+        copy.state = self.state
+        copy.depth = self.depth
+
+        return copy
 
     def is_wall(self) -> bool:
         return self.state == State.WALL
@@ -143,6 +143,8 @@ class Maze:
     time: Time
     cells: list[list[Cell]]
 
+    snapshots: list[Cell]
+
     _start: Position
     _exit: Position
 
@@ -151,6 +153,12 @@ class Maze:
     def _tick(self) -> Time:
         self.time.tick()
         return self.time
+
+    def enable_hardcore(self):
+        self._hardcore = True
+
+    def _apply_snapshot(self, snapshot: Cell):
+        self.cells[snapshot.y][snapshot.x] = snapshot
 
     def size(self) -> (int, int):
         return len(self.cells[0]), len(self.cells)
@@ -218,3 +226,6 @@ class Maze:
 
         if not self.has_path():
             raise Exception('No path from start to exit.')
+
+    def export(self):
+        ...
