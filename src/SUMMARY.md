@@ -1,6 +1,7 @@
 # Summary
 
-- [Introduction](./00-introduction/README.md)
+[Introduction](./README.md)
+
 - [Setup](./01-setup/README.md)
     - [Windows](./01-setup/00-windows.md)]
 - [Starting Out](./02-starting-out/README.md)
