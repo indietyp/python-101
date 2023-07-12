@@ -1,7 +1,7 @@
 """
 This is an extra task, that is not required for the course.
 
-You will be given a maze (as a `Maze` object) and a starting position (as a `Position` object),
+You will be given a maze (as a `Maze` object) and a starting position (as a `Cell` object),
 your goal is to find a path from the starting position to the exit of the maze.
 
 `State` is an enumeration with the following values:
@@ -18,7 +18,7 @@ The `Position` object has the following attributes:
     - `depth`: The depth of the position, this is used to determine the order in which
         the positions are visited.
 
-The `Position` object additionally has the following methods:
+The `Cell` object additionally has the following methods:
     - `neighbors() -> list[Position]`: Returns a list of positions that
         are neighbors of the given position.
     - `neighbors_with_state(state: State) -> list[Position]`:
@@ -34,27 +34,24 @@ The maze object exposes the following methods:
     - `size() -> tuple[int, int]`:
         Returns the size of the maze as a tuple of two integers.
     - `cell(position: Position) -> State`: Returns the cell at the given position.
-    - `cells(state: State | None) -> list[Position]`:
+    - `cells(state: State | None) -> list[Cell]`:
         Returns a list of positions that satisfy the given state.
-    - `random_cell(state: State | None) -> Position`:
+    - `random_cell(state: State | None) -> Cell`:
         Returns a random position of the specified state.
-    - `deepest_cell(state: State | None) -> Position`:
+    - `deepest_cell(state: State | None) -> Cell`:
         Returns the deepest position of the specified state.
-    - `shallowest_cell(state: State | None) -> Position`:
+    - `shallowest_cell(state: State | None) -> Cell`:
         Returns the shallowest position of the specified state.
-    - `newest_cell(state: State | None) -> Position`:
+    - `newest_cell(state: State | None) -> Cell`:
         Returns the newest position of the specified state, time is measured by
         the modification time.
-    - `oldest_cell(state: State | None) -> Position`:
+    - `oldest_cell(state: State | None) -> Cell`:
         Returns the oldest position of the specified state,
         time is measured by the modification time.
-    - `neighbors(position: Position) -> list[Position]`: Returns a list of positions that
+    - `neighbors(position: Cell, state: State | None) -> list[Cell]`: Returns a list of positions that
         are neighbors of the given position.
-    - `neighbors_with_state(position: Position, state: State) -> list[Position]`:
-        Returns a list of positions that are neighbors of the given position and
-        have the given state.
-    - `get_start() -> Position`: Returns the starting position.
-    - `assert_exit(position: Position) -> None`: Raises an exception if the given position
+    - `start() -> Cell`: Returns the starting position.
+    - `assert_exit(cell: Cell) -> None`: Raises an exception if the given position
         is not the exit of the maze.
     - `export(filename: str) -> None`: Exports the maze to the given filename as a GIF
         image.
