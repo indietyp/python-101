@@ -7,23 +7,16 @@ your goal is to find a path from the starting position to the exit of the maze.
 `State` is an enumeration with the following values:
     - `State.WALL`: A wall, you cannot move here.
     - `State.EMPTY`: An empty cell, you can move here.
-    - `State.START`: The starting position, you can move here.
-    - `State.EXIT`: The exit of the maze, you can move here.
     - `State.VISITED`: A cell that has been visited, you can move here.
     - `State.MARKED`: A cell that has been marked, you can move here.
 
 The `Position` object has the following attributes:
     - `x`: The x coordinate of the position.
     - `y`: The y coordinate of the position.
-    - `depth`: The depth of the position, this is used to determine the order in which
-        the positions are visited.
 
 The `Cell` object additionally has the following methods:
-    - `neighbors() -> list[Position]`: Returns a list of positions that
-        are neighbors of the given position.
-    - `neighbors_with_state(state: State) -> list[Position]`:
-        Returns a list of positions that are neighbors of the given position
-        and have the given state.
+    - `neighbors(state: State | None) -> list[Position]`:
+        Returns a list of positions that are neighbors of the given position.
     - `distance(other: Position) -> int`:
         Returns the distance between the given position and the other position.
         (Manhattan distance)
@@ -55,8 +48,8 @@ The maze object exposes the following methods:
         Returns `True` if there is a path from the starting position using `State.MARKED`
     - `assert_path(cell: Cell) -> None`: Raises an exception if the given position
         is not the exit of the maze.
-    - `export(filename: str) -> None`: Exports the maze to the given filename as a GIF
-        image.
+    - `render_animations() -> str`: Exports the animation of the maze as an HTML file.
+    - `render_state() -> str`: Exports the state of the maze as an HTML file.
 
 There are a lot of viable solutions to this problem,
 but the easiest one is to use a graph algorithm like BFS or DFS.
