@@ -35,11 +35,11 @@
         }
 
         .maze .cell.start {
-            background-color: #0f0;
+            background-color: #0f0 !important;
         }
 
         .maze .cell.exit {
-            background-color: #f00;
+            background-color: #f00 !important;
         }
 
         .maze .cell.visited {
@@ -51,8 +51,8 @@
         }
     </style>
     <script>
-        const MazeTransitionContainerClass = 'maze-container'
-        const delay = 200;
+        const MazeTransitionContainerId = 'maze-container'
+        const delay = 50;
 
         /**
          * @param {HTMLElement} container
@@ -79,8 +79,9 @@
             }, delay);
         }
 
-        document.addEventListener('load', () => {
-            let container = document.getElementById(MazeTransitionContainerClass);
+        window.addEventListener('load', () => {
+            console.log('loaded');
+            let container = document.getElementById(MazeTransitionContainerId);
 
             if (!container) {
                 // that's fine, we are in single mode

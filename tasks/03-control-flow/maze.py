@@ -17,6 +17,7 @@ while TASK_ROOT.name != "tasks":
 
 RESOURCES = TASK_ROOT / "03-control-flow" / "resources"
 
+
 class State(IntFlag):
     WALL = auto()
     EMPTY = auto()
@@ -68,6 +69,7 @@ class Cell:
 
         self.depth = 0
         self._state = State.EMPTY
+        self.modified = Time()
 
         self._maze = maze
 
@@ -101,16 +103,17 @@ class Cell:
         if self._state == State.WALL and state != State.WALL:
             raise Exception('Cannot change the state of a wall cell.')
 
-        self._maze.snapshots.append(deepcopy(self))
-
         self._state = state
         # noinspection PyProtectedMember
         self.modified = self._maze._tick()
+
+        self._maze.snapshots.append(self.copy())
 
     def copy(self) -> Self:
         copy = Cell(self.position, self._maze)
         copy._state = self._state
         copy.depth = self.depth
+        copy.modified = self.modified
 
         return copy
 
@@ -171,6 +174,10 @@ class Maze:
         # not using setter to not increase time
         for y, row in enumerate(grid):
             for x, cell in enumerate(row):
+                # They are not considered walls, therefore are empty
+                if (x, y) in (start, end):
+                    continue
+
                 if cell == 1:
                     self._cells[y][x]._state = State.WALL
 
@@ -196,7 +203,7 @@ class Maze:
 
     def _tick(self) -> Time:
         self.time.tick()
-        return self.time
+        return deepcopy(self.time)
 
     def enable_hardcore(self):
         self._hardcore = True
@@ -225,20 +232,45 @@ class Maze:
         return [cell for row in self._cells for cell in row if
                 state is None or cell.state() in state]
 
-    def random_cell(self, state: State | None = None) -> Cell:
-        return choice(self.cells(state))
+    def random_cell(self, state: State | None = None) -> Cell | None:
+        cells = self.cells(state)
 
-    def deepest_cell(self, state: State | None = None) -> Cell:
-        return max(self.cells(state), key=lambda cell: cell.depth)
+        if not cells:
+            return None
 
-    def shallowest_cell(self, state: State | None = None) -> Cell:
-        return min(self.cells(state), key=lambda cell: cell.depth)
+        return choice(cells)
 
-    def newest_cell(self, state: State | None = None) -> Cell:
-        return max(self.cells(state), key=lambda cell: cell.modified.t)
+    def deepest_cell(self, state: State | None = None) -> Cell | None:
+        cells = self.cells(state)
 
-    def oldest_cell(self, state: State | None = None) -> Cell:
-        return min(self.cells(state), key=lambda cell: cell.modified.t)
+        if not cells:
+            return None
+
+        return max(cells, key=lambda cell: cell.depth)
+
+    def shallowest_cell(self, state: State | None = None) -> Cell | None:
+        cells = self.cells(state)
+
+        if not cells:
+            return None
+
+        return min(cells, key=lambda cell: cell.depth)
+
+    def newest_cell(self, state: State | None = None) -> Cell | None:
+        cells = self.cells(state)
+
+        if not cells:
+            return None
+
+        return max(cells, key=lambda cell: cell.modified.t)
+
+    def oldest_cell(self, state: State | None = None) -> Cell | None:
+        cells = self.cells(state)
+
+        if not cells:
+            return None
+
+        return min(cells, key=lambda cell: cell.modified.t)
 
     @staticmethod
     def neighbours(cell: Cell, state: State | None = None) -> list[Cell]:
@@ -315,7 +347,7 @@ class Maze:
     def render_animation(self) -> str:
         original = self._copy_original()
 
-        container = ET.Element('div', attrib={'class': 'maze-container'})
+        container = ET.Element('div', attrib={'id': 'maze-container'})
         container.append(self._render_tree(original))
 
         for snapshot in self.snapshots:

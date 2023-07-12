@@ -61,3 +61,53 @@ The maze object exposes the following methods:
 There are a lot of viable solutions to this problem,
 but the easiest one is to use a graph algorithm like BFS or DFS.
 """
+from pathlib import Path
+
+from maze import Maze, State, Position, Cell
+
+# Feel free to change these values to test your code.
+WIDTH = 16
+HEIGHT = 16
+
+maze = Maze(WIDTH, HEIGHT)
+
+# Write your code below this line 👇
+
+# Naive implementation of DFS
+maze.enable_hardcore()
+current = maze.start()
+
+while True:
+    current.set_state(State.MARKED)
+
+    if current.is_exit():
+        break
+
+    harakiri = False
+
+    for neighbour in maze.neighbours(current, State.EMPTY):
+        if neighbour.is_exit():
+            neighbour.set_state(State.MARKED)
+            harakiri = True
+            break
+
+        neighbour.set_state(State.VISITED)
+
+    if harakiri:
+        break
+
+    current = maze.newest_cell(State.VISITED)
+
+    if current is None:
+        break
+
+# Write your code above this line 👆
+
+# This will raise an exception if the maze is not solved.
+maze.assert_path()
+
+# This will export the maze as an HTML file that you can open in your browser.
+DIRECTORY = Path(__file__).parent.absolute()
+OUTPUT = DIRECTORY / 'maze.html'
+
+OUTPUT.write_text(maze.render_animation())
