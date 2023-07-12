@@ -10,3 +10,12 @@ Example:
 """
 
 # Write your code below this line 👇
+
+string = input('Enter a string: ')
+vowels = 0
+
+for character in string:
+    if character in 'aeiou':
+        vowels += 1
+
+print(f'There are {vowels} vowels in the string.')

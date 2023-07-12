@@ -36,3 +36,21 @@ Example:
 from utils import number
 
 # Write your code below this line 👇
+
+guesses = 0
+
+while True:
+    input_number = input('Guess a number: ')
+    input_number = int(input_number)
+
+    guesses += 1
+
+    if input_number > number:
+        print('Too high')
+    elif input_number < number:
+        print('Too low')
+    else:
+        print('You win')
+        print(f'You made {guesses} guesses')
+
+        break

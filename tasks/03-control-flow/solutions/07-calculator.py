@@ -22,3 +22,37 @@ Example:
 """
 
 # Write your code below this line 👇
+
+lhs = input('Enter a number: ')
+lhs = int(lhs)
+
+rhs = input('Enter another number: ')
+rhs = int(rhs)
+
+while True:
+    operator = input('Enter an operator: ')
+
+    match operator:
+        case '+':
+            print(lhs + rhs)
+            break
+        case '-':
+            print(lhs - rhs)
+            break
+        case '*':
+            print(lhs * rhs)
+            break
+        case '/':
+            print(lhs / rhs)
+            break
+        case '%':
+            print(lhs % rhs)
+            break
+        case '**':
+            print(lhs ** rhs)
+            break
+        case '//':
+            print(lhs // rhs)
+            break
+        case _:
+            print('Invalid operator, supported operators are +, -, *, /, %, **, //.')

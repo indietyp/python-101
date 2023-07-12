@@ -10,3 +10,11 @@ Example:
 """
 
 # Write your code below this line 👇
+
+value = input('How old are you? ')
+value = int(value)
+
+if value >= 18:
+    print('You are an adult.')
+else:
+    print('You are not an adult.')

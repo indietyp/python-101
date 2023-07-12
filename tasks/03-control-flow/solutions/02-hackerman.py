@@ -19,3 +19,11 @@ Example:
 from utils import password
 
 # Write your code below this line 👇
+
+value = input('Enter password: ')
+value = str(value)
+
+if value == password:
+    print('Access granted')
+else:
+    print('Access denied')

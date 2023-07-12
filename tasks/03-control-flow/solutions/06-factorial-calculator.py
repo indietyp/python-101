@@ -7,3 +7,13 @@ Example:
 """
 
 # Write your code below this line 👇
+
+number = input('Enter a number: ')
+number = int(number)
+
+factorial = 1
+
+for i in range(1, number + 1):
+    factorial *= i
+
+print(f'The factorial of {number} is {factorial}.')

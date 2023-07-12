@@ -10,3 +10,11 @@ Example:
 """
 
 # Write your code below this line 👇
+
+value = input('Enter a number: ')
+value = int(value)
+
+if value % 2 == 0:
+    print(f'{value} is even.')
+else:
+    print(f'{value} is odd.')

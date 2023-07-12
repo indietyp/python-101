@@ -11,3 +11,14 @@ Example:
 """
 
 # Write your code below this line 👇
+
+year = input('Enter a year: ')
+year = int(year)
+
+is_regular_leap_year = year % 4 == 0 and year % 100 != 0
+is_exceptional_leap_year = year % 400 == 0
+
+if is_regular_leap_year or is_exceptional_leap_year:
+    print(f'{year} is a leap year.')
+else:
+    print(f'{year} is not a leap year.')
