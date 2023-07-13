@@ -279,6 +279,9 @@ class Maze:
     def start(self) -> Cell:
         return self.cell(self._start)
 
+    def exit(self) -> Cell:
+        return self.cell(self._exit)
+
     def has_path(self):
         """
         Assert that we have a path from the start to the exit with `State.MARKED` cells.
