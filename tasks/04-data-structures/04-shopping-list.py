@@ -44,28 +44,3 @@ Example:
 """
 
 # Write your code below this line 👇
-
-shopping_list = []
-while True:
-    command = input("Input: ")
-    args = command.split()
-
-    match args:
-        case ["done"]:
-            break
-        case ["add", *items]:
-            shopping_list.extend(items)
-        case ["remove", *items]:
-            for item in items:
-                if item.isdigit():
-                    shopping_list.pop(int(item))
-                else:
-                    shopping_list.remove(item)
-        case ["print"]:
-            print("Output:")
-            for index, item in enumerate(shopping_list):
-                print(f"    [{index}] {item}")
-        case ["clear"]:
-            shopping_list.clear()
-        case _:
-            print("Unknown command")

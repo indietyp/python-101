@@ -44,26 +44,3 @@ Example (extra):
 """
 
 # Write your code below this line 👇
-
-input_string = input("Input: ")
-
-if input_string.startswith("[load file]"):
-    _, filename = input_string.split()
-    with open(filename) as file:
-        input_string = file.read()
-
-input_string = input_string.replace(".", "").replace(",", "").replace("!", "").replace(
-    "?", "")
-input_string = input_string.lower()
-words = input_string.split()
-
-word_frequencies = {}
-for word in words:
-    if word not in word_frequencies:
-        word_frequencies[word] = 0
-    word_frequencies[word] += 1
-
-print("Output:")
-for word, frequency in sorted(word_frequencies.items(), key=lambda item: item[1],
-                              reverse=True):
-    print(f"{word}: {frequency}")

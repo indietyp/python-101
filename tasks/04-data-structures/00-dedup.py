@@ -21,34 +21,3 @@ Example:
 """
 
 # Write your code below this line 👇
-
-# List solution
-numbers = []
-while True:
-    value = input("Input: ")
-    if value == "done":
-        break
-
-    value = int(value)
-    if value not in numbers:
-        numbers.append(value)
-
-print(f"Output: {numbers}")
-
-# Set solution
-numbers = set()
-while True:
-    value = input("Input: ")
-    if value == "done":
-        break
-
-    value = int(value)
-    numbers.add(value)
-
-print(f"Output: {list(numbers)}")
-
-# String solution
-numbers = input("Input: ")
-numbers = numbers.split(",")
-numbers = {int(number.strip()) for number in numbers}
-print(f"Output: {list(numbers)}")
