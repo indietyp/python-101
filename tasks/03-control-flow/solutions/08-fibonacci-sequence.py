@@ -14,17 +14,29 @@ Example:
 
 # Write your code below this line 👇
 
-n = input('Enter a number: ')
+n = input("Enter a number: ")
 n = int(n)
 
 a = 0
 b = 1
 
-for i in range(n):
-    print(a, end=' ')
+for i in range(0, n):
+    print(a, end=" ")
+
+    a_old = a
+    b_old = b
+
+    a = b_old
+    b = a_old + b_old
 
     c = a
     a = b
     b = c + b
+
+    # a = 1
+    # b = 1
+
+    # a = 1
+    # b = 2
 
 print()

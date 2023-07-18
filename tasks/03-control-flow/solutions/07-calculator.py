@@ -23,36 +23,36 @@ Example:
 
 # Write your code below this line 👇
 
-lhs = input('Enter a number: ')
+lhs = input("Enter a number: ")
 lhs = int(lhs)
 
-rhs = input('Enter another number: ')
+rhs = input("Enter another number: ")
 rhs = int(rhs)
 
 while True:
-    operator = input('Enter an operator: ')
+    operator = input("Enter an operator: ")
 
     match operator:
-        case '+':
+        case "+":
             print(lhs + rhs)
             break
-        case '-':
+        case "-":
             print(lhs - rhs)
             break
-        case '*':
+        case "*":
             print(lhs * rhs)
             break
-        case '/':
+        case "/":
             print(lhs / rhs)
             break
-        case '%':
+        case "%":
             print(lhs % rhs)
             break
-        case '**':
-            print(lhs ** rhs)
+        case "**":
+            print(lhs**rhs)
             break
-        case '//':
+        case "//":
             print(lhs // rhs)
             break
         case _:
-            print('Invalid operator, supported operators are +, -, *, /, %, **, //.')
+            print("Invalid operator, supported operators are +, -, *, /, %, **, //.")

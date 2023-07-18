@@ -11,11 +11,23 @@ Example:
 
 # Write your code below this line 👇
 
-string = input('Enter a string: ')
+string = input("Enter a string: ")
+# string = ""
+string = string.lower()
 vowels = 0
 
-for character in string:
-    if character in 'aeiou':
+index = 0
+while index < len(string):
+    character = string[index]
+
+    if character in "aeiou":
         vowels += 1
 
-print(f'There are {vowels} vowels in the string.')
+    index += 1
+
+
+for character in string:
+    if character in "aeiou":
+        vowels += 1
+
+print(f"There are {vowels} vowels in the string.")
