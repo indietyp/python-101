@@ -39,7 +39,7 @@ my_function("world")
 # > Hello, world!
 ```
 
-```adomish info title="Trivia" collapsible="true"
+```admonish info title="Trivia" collapsible=true
 
 In programming we differentiate between arguments and parameters.
 Parameters are the variables defined in the function definition.
