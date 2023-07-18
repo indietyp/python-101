@@ -24,6 +24,8 @@
     - [Dataclasses](./04-data-structures/04-data-classes.md)
     - [Enumerations](./04-data-structures/05-enums.md)
 - [Functions And Classes](./05-functions-and-classes/README.md)
+    - [Functions](./05-functions-and-classes/00-functions.md)
+    - [Classes](./05-functions-and-classes/01-classes.md) 
 - [Appendix](./06-appendix/README.md)
     - [Bash Cheat Sheet](./06-appendix/00-bash-cheat-sheet.md)
     - [Git Cheat Sheet](./06-appendix/01-git-cheat-sheet.md)
