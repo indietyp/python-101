@@ -26,14 +26,16 @@ flowchart TD
 
     D -->|Yes| E{{Are all values unique?}}
     D -->|No| I
-
-    E -->|Yes| G{{Do I only insert values once<br/>and then check against those?}}
+    
+    E -->|No| I{{Do I only insert values once?}}
+    I -->|Yes| J[use <code>tuple</code>]
+    I -->|No| C[use <code>list</code>]
+    B -->|Yes| L[use <code>dict</code>]
+    
+    E -->|Yes| M{{Do I need to know the order of the values?}}
+    M -->|Yes| C
+    M -->|No| G{{Do I only insert values once<br/>and then check against those?}}
     G -->|Yes| H[use <code>frozenset</code>]
     G -->|No| F[use <code>set</code>]
 
-    E -->|No| I{{Do I only insert values once?}}
-    I -->|No| C[use <code>list</code>]
-
-    I -->|Yes| J[use <code>tuple</code>]
-    B -->|Yes| L[use <code>dict</code>]
 ```
